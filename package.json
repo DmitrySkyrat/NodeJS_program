@@ -1,0 +1,29 @@
+{
+  "name": "nodejs_program",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "task1": "nodemon --exec babel-node task1.js",
+    "task2": "nodemon --exec babel-node task2.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DmitrySkyrat/NodeJS_program.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DmitrySkyrat/NodeJS_program/issues"
+  },
+  "homepage": "https://github.com/DmitrySkyrat/NodeJS_program#readme",
+  "dependencies": {
+    "csvtojson": "^2.0.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/node": "^7.13.12",
+    "@babel/preset-env": "^7.13.12"
+  }
+}
