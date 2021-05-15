@@ -25,7 +25,5 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "."
   },
-  "include": [
-    "src/**/*"
-, "module1"  ]
+  "include": ["src/**/*"]
 }
