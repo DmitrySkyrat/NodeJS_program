@@ -2,7 +2,7 @@ import * as Joi from "joi";
 import {
   ContainerTypes,
   ValidatedRequestSchema,
-} from "express-joi-validation";
+} from 'express-joi-validation';
 
 export interface UserRequestBodySchema extends ValidatedRequestSchema {
   [ContainerTypes.Body]: {
