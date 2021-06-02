@@ -8,7 +8,7 @@ router.get('/', (req: Request, res: Response) => {
     <h1>Hello Dima</h1>
     <p>node application</p>
   </div>
-  `)
-})
+  `);
+});
 
-module.exports = router;
+export default router;

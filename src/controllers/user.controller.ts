@@ -1,35 +1,40 @@
 import {Request, Response} from 'express';
-import db from '../database/sequelize';
 import {getAutoSuggestUsers} from '../services/user.service';
-const User = db.user;
+import User from '../database/models/user';
 
 class UserController {
   static readonly DEFAULT_USERS_LIMIT = 10;
   static readonly LOGIN_SUBSTRING = '';
 
-  async getUsers(req: Request, res: Response): Promise<any> {
+  getUsers(req: Request, res: Response) {
     User.findAll({raw: true})
     .then(users => {
       const filteredUsers = getAutoSuggestUsers(users as any[], UserController.LOGIN_SUBSTRING, UserController.DEFAULT_USERS_LIMIT);
 
       return res.json(filteredUsers);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      res.status(500).send(err);
+      return console.log(err);
+    });
   };
 
-  async getUserById(req: Request, res: Response): Promise<any> {
+  getUserById(req: Request, res: Response) {
     const id = req.params.id;
 
     User.findByPk(id)
     .then(user => {
-      if(!user) return;
+      if(!user) return res.status(404).json({ message: 'Not found' });
 
       return res.json(user);
     })
-    .catch(err=>console.log(err));
+    .catch(err => {
+      res.status(500).send(err);
+      return console.log(err);
+    });
   };
 
-  async createUser(req: Request, res: Response): Promise<any> {
+  createUser(req: Request, res: Response) {
     const { login, password, age, isdeleted} = req.body;
 
     User.create({
@@ -38,13 +43,18 @@ class UserController {
       age: age,
       isdeleted: isdeleted
     })
-    .then(value => {
-      return res.status(201).json(value);
+    .then(user => {
+      console.log(user);
+      
+      return res.status(201).json(user);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      res.status(400).send(err);
+      return console.log(err);
+    });
   };
 
-  async deleteUser(req: Request, res: Response): Promise<any> {
+  deleteUser(req: Request, res: Response) {
     const id = req.params.id;
 
     User.destroy({
@@ -55,10 +65,13 @@ class UserController {
     .then((deletedId) => {
       return res.status(204).json(deletedId);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      res.status(404).send(err);
+      return console.log(err);
+    });
   };
 
-  async updateUserById(req: Request, res: Response): Promise<any> {
+  updateUserById(req: Request, res: Response) {
     const id = req.params.id;
     const { login, password, age, isdeleted} = req.body;
 
@@ -74,9 +87,12 @@ class UserController {
       }
     })
     .then((updatedStatus) => {
-      res.json(updatedStatus);
+      return res.status(204).json(updatedStatus);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      res.status(400).send(err);
+      return console.log(err);
+    });
   };
 }
 

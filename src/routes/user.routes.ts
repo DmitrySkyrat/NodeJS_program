@@ -1,6 +1,6 @@
-import {Router} from "express";
+import {Router} from 'express';
 import validator from '../middlewares/validator';
-import {userQuerySchema} from "../middlewares/schemes";
+import {userQuerySchema} from '../middlewares/schemes';
 import userController from '../controllers/user.controller';
 
 const router = Router();

@@ -1,4 +1,4 @@
-import {IUser} from "../model/users";
+import {IUser} from '../model/users';
 
 export function getAutoSuggestUsers(users: IUser[], loginSubstring: string, limit: number): IUser[] {
   return users
@@ -10,4 +10,4 @@ export function getAutoSuggestUsers(users: IUser[], loginSubstring: string, limi
     return 0;
   })
   .slice(0, limit);
-}
+};

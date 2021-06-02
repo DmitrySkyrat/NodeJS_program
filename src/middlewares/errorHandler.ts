@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { ExpressJoiError } from "express-joi-validation";
+import { Request, Response, NextFunction } from 'express';
+import { ExpressJoiError } from 'express-joi-validation';
 
 const errorTypes = [
   'body',
