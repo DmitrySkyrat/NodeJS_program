@@ -9,7 +9,7 @@ class UserController {
   getUsers(req: Request, res: Response) {
     User.findAll({raw: true})
     .then(users => {
-      const filteredUsers = getAutoSuggestUsers(users as any[], UserController.LOGIN_SUBSTRING, UserController.DEFAULT_USERS_LIMIT);
+      const filteredUsers = getAutoSuggestUsers(users, UserController.LOGIN_SUBSTRING, UserController.DEFAULT_USERS_LIMIT);
 
       return res.json(filteredUsers);
     })
@@ -43,9 +43,7 @@ class UserController {
       age: age,
       isdeleted: isdeleted
     })
-    .then(user => {
-      console.log(user);
-      
+    .then(user => {      
       return res.status(201).json(user);
     })
     .catch(err => {
