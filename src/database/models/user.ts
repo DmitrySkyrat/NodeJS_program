@@ -1,5 +1,7 @@
 import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
+import Group from './group';
 import sequelize from './index';
+import UserGroup from './user-group';
 
 interface UserAttributes {
   id: string;
@@ -46,5 +48,8 @@ const User = sequelize.define<UserInstance>(
     }
   }
 );
+
+User.belongsToMany(Group, {through: UserGroup});
+Group.belongsToMany(User, {through: UserGroup});
 
 export default User;

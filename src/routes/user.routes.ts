@@ -3,12 +3,12 @@ import validator from '../middlewares/validator';
 import {userQuerySchema} from '../middlewares/schemes';
 import userController from '../controllers/user.controller';
 
-const router = Router();
+const userRouter = Router();
 
-router.get('/users', userController.getUsers);
-router.get('/users/:id', userController.getUserById);
-router.post('/users', validator.body(userQuerySchema), userController.createUser);
-router.put('/users/:id', validator.body(userQuerySchema), userController.updateUserById);
-router.delete('/users/:id', userController.deleteUser);
+userRouter.get('/users', userController.getUsers);
+userRouter.get('/users/:id', userController.getUserById);
+userRouter.post('/users', validator.body(userQuerySchema), userController.createUser);
+userRouter.put('/users/:id', validator.body(userQuerySchema), userController.updateUserById);
+userRouter.delete('/users/:id', userController.deleteUser);
 
-export default router;
+export default userRouter;
