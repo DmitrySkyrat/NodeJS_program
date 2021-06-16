@@ -12,32 +12,13 @@ import Group from './database/models/group';
 import { IGroup } from './model/group';
 import { IUser } from './model/users';
 import userGroupsRouter from './routes/user-groups.route';
+import logger from './utils/logger';
+import requestData from './middlewares/requestData';
 
 const app: Application = express();
-const eraseDatabaseOnSync = false;
-
-app.use(express.json());
-app.use(homeRoute);
-app.use(userRouter);
-app.use(groupRouter);
-app.use(userGroupsRouter);
-app.use(validationErrorHandler);
-
-sequelize.sync({ force: eraseDatabaseOnSync })
-.then(async() => {
-  if (eraseDatabaseOnSync) {
-    createUsers();
-    createGroups();
-  }
-
-  app.listen(port, (): void => {
-    console.log(`server started on port ${port}`);
-  });
-})
-.catch(err=> console.log(err));
-
+const eraseDatabaseOnSync = true;
 const createUsers = () => {
-  users.map(async (user: IUser):Promise<void>  => {
+  users.map(async (user: IUser): Promise<void>  => {
     await User.create(user);
   });
 };
@@ -47,3 +28,29 @@ const createGroups = () => {
     await Group.create(group);
   });
 };
+
+app.use(express.json());
+app.use(requestData);
+app.use(homeRoute);
+app.use(userRouter);
+app.use(groupRouter);
+app.use(userGroupsRouter);
+app.use(validationErrorHandler);
+
+
+sequelize.sync({ force: eraseDatabaseOnSync })
+.then(async() => {
+  if (eraseDatabaseOnSync) {
+    createUsers();
+    createGroups();
+  }
+
+  app.listen(port, (): void => {
+    logger.info(`Server started on port ${port}`);
+  });
+})
+.catch(err=> logger.error(JSON.stringify(err)));
+
+process.on('uncaughtException', (error) => {
+  logger.error(JSON.stringify(error));
+});
