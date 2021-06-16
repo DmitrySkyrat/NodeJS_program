@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { ExpressJoiError } from 'express-joi-validation';
+import { errorMessage } from './requestData';
+import logger from '../utils/logger';
 
 const errorTypes = [
   'body',
@@ -7,7 +9,7 @@ const errorTypes = [
   'query',
   'params',
   'fields'
-]
+];
 
 export const validationErrorHandler = (
   error: any | ExpressJoiError,
@@ -16,6 +18,8 @@ export const validationErrorHandler = (
   next: NextFunction
 ) => {
   if (error && errorTypes.includes(error.type)) {
+    logger.error(errorMessage(error, request));
+
     const { type } = error;
     const { message } = error.error;
     
