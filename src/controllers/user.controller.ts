@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import {getAutoSuggestUsers} from '../services/user.service';
 import User from '../database/models/user';
+import hashService from '../services/hash.service';
 
 class UserController {
   static readonly DEFAULT_USERS_LIMIT = 10;
@@ -20,7 +21,7 @@ class UserController {
   };
 
   getUserById(req: Request, res: Response) {
-    const id = req.params.id;
+    const {id} = req.params;
 
     User.findByPk(id)
     .then(user => {
@@ -34,15 +35,12 @@ class UserController {
     });
   };
 
-  createUser(req: Request, res: Response) {
-    const { login, password, age, isdeleted} = req.body;
+  async createUser(req: Request, res: Response) {
+    const { login, password: newPassword, age, isdeleted} = req.body;
 
-    User.create({
-      login: login,
-      password: password,
-      age: age,
-      isdeleted: isdeleted
-    })
+    const password = await hashService.hashPassword(newPassword);
+
+    User.create({login, password, age, isdeleted})
     .then(user => {      
       return res.status(201).json(user);
     })
@@ -53,12 +51,10 @@ class UserController {
   };
 
   deleteUser(req: Request, res: Response) {
-    const id = req.params.id;
+    const {id} = req.params;
 
     User.destroy({
-      where: {
-        id: id
-      }
+      where: {id}
     })
     .then((deletedId) => {
       return res.status(204).json(deletedId);
@@ -69,20 +65,15 @@ class UserController {
     });
   };
 
-  updateUserById(req: Request, res: Response) {
-    const id = req.params.id;
-    const { login, password, age, isdeleted} = req.body;
+  async updateUserById(req: Request, res: Response) {
+    const {id} = req.params;
+    const {login, password: newPassword, age, isdeleted} = req.body;
 
-    User.update({
-      login: login,
-      password: password,
-      age: age,
-      isdeleted: isdeleted
-    },
+    const password = await hashService.hashPassword(newPassword) || newPassword;
+
+    User.update({login, password, age, isdeleted},
     {
-      where: {
-        id: id
-      }
+      where: {id}
     })
     .then((updatedStatus) => {
       return res.status(204).json(updatedStatus);

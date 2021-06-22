@@ -12,7 +12,6 @@ class UserGroupsService {
         },
         { transaction: t })
         .then(result => {
-          console.log(result);
           return  result;
         })
         .catch(error => {

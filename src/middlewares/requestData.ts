@@ -16,7 +16,7 @@ export const errorMessage = (err: Error, req: Request): string => {
 
 const requestData = (req: Request, res: Response, next: NextFunction): void => {
   logger.info(`RESPONSE STARTED ${getRequestMessage(req)}`);
-  console.log(req);
+  
   res.on('finish', () => {
     logger.info(`RESPONSE IS FINISHED ${getRequestMessage(req)}`);
   });

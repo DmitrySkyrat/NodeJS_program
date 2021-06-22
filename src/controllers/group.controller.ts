@@ -10,7 +10,7 @@ class GroupController {
   };
 
   getGroupById(req: Request, res: Response) {
-    const id = req.params.id;
+    const {id} = req.params;
 
     Group.findByPk(id)
     .then(group => {
@@ -28,10 +28,7 @@ class GroupController {
   createGroup(req: Request, res: Response) {
     const {name, permissions} = req.body;
 
-    Group.create({
-      name: name,
-      permissions: permissions
-    })
+    Group.create({name, permissions})
     .then(group => {
       return res.status(201).json(group);
     })
@@ -43,17 +40,12 @@ class GroupController {
   };
 
   updateGroup(req: Request, res: Response) {
-    const id = req.params.id;
-    const { name, permissions } = req.body;
+    const {id} = req.params;
+    const {name, permissions} = req.body;
 
-    Group.update({
-      name: name,
-      permissions: permissions
-    },
+    Group.update({name, permissions},
     {
-      where: {
-        id: id
-      }
+      where: {id}
     })
     .then((updatedStatus) => {
       return res.status(204).json(updatedStatus);
@@ -66,12 +58,10 @@ class GroupController {
   };
 
   deleteGroup(req: Request, res: Response) {
-    const id = req.params.id;
+    const {id} = req.params;
 
     Group.destroy({
-      where: {
-        id: id
-      }
+      where: {id}
     })
     .then((deletedId) => {
       return res.status(204).json(deletedId);
