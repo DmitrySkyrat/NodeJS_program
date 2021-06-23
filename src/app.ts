@@ -14,6 +14,9 @@ import { IUser } from './model/users';
 import userGroupsRouter from './routes/user-groups.route';
 import logger from './utils/logger';
 import requestData from './middlewares/requestData';
+import cors from 'cors';
+import loginRouter from './routes/login.route';
+import authorization from './middlewares/authorization';
 
 const app: Application = express();
 const eraseDatabaseOnSync = true;
@@ -29,7 +32,10 @@ const createGroups = () => {
   });
 };
 
+app.use(cors());
 app.use(express.json());
+app.use(loginRouter);
+app.use(authorization);
 app.use(requestData);
 app.use(homeRoute);
 app.use(userRouter);
