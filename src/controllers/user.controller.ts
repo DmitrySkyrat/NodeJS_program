@@ -41,7 +41,7 @@ class UserController {
     const password = await hashService.hashPassword(newPassword);
 
     User.create({login, password, age, isdeleted})
-    .then(user => {      
+    .then(user => {
       return res.status(201).json(user);
     })
     .catch(err => {

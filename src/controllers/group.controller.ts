@@ -6,6 +6,11 @@ class GroupController {
     Group.findAll({raw: true})
     .then(groups => {
       return res.json(groups);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+
+      return console.log(err);
     });
   };
 
